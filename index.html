@@ -1,0 +1,325 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+3:wght@400;600&display=swap');
+
+  /* =============================================
+     EASY CUSTOMIZATION — Edit these variables!
+  ============================================= */
+  .fm-wrap {
+    --color-accent:       #C8762A;
+    --color-accent-dark:  #8B4A10;
+    --color-text:         #3a3a3a;
+    --color-text-muted:   #777;
+    --color-bg:           #ffffff;
+    --color-card-bg:      #fdf8ef;
+    --color-card-border:  #f0e6cc;
+    --color-tab-inactive: #888;
+    --font-heading: 'Playfair Display', Georgia, serif;
+    --font-body:    'Source Sans 3', Arial, sans-serif;
+    --font-size-page-title: 2.2rem;
+    --font-size-card-title: 1.2rem;
+    --font-size-body:       0.95rem;
+
+    font-family: var(--font-body);
+    background: var(--color-bg);
+    color: var(--color-text);
+    padding: 0 16px 60px;
+    box-sizing: border-box;
+  }
+
+  .fm-wrap *, .fm-wrap *::before, .fm-wrap *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* ---- HIDE THE RADIO INPUTS ---- */
+  .fm-wrap input[type="radio"] {
+    display: none;
+  }
+
+  /* ---- TABS NAV ---- */
+  .fm-wrap .tabs-nav {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    border-bottom: 1.5px solid #e0d5c5;
+    margin-bottom: 48px;
+    padding-top: 24px;
+  }
+
+  .fm-wrap .tab-label {
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--color-tab-inactive);
+    padding-bottom: 14px;
+    position: relative;
+    letter-spacing: 0.01em;
+    transition: color 0.2s;
+    user-select: none;
+  }
+
+  .fm-wrap .tab-label:hover {
+    color: var(--color-accent);
+  }
+
+  /* Active tab styles — triggered by checked radio */
+  .fm-wrap #tab-offseason:checked ~ .tabs-nav .label-offseason,
+  .fm-wrap #tab-markets:checked ~ .tabs-nav .label-markets {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  .fm-wrap #tab-offseason:checked ~ .tabs-nav .label-offseason::after,
+  .fm-wrap #tab-markets:checked ~ .tabs-nav .label-markets::after {
+    content: '';
+    position: absolute;
+    bottom: -1.5px;
+    left: 0; right: 0;
+    height: 2.5px;
+    background: var(--color-accent);
+    border-radius: 2px;
+  }
+
+  /* ---- PANELS ---- */
+  .fm-wrap .tab-panel {
+    display: none;
+  }
+
+  .fm-wrap #tab-offseason:checked ~ .panel-offseason,
+  .fm-wrap #tab-markets:checked ~ .panel-markets {
+    display: block;
+  }
+
+  .fm-wrap .panel-title {
+    font-family: var(--font-heading);
+    font-size: var(--font-size-page-title);
+    color: var(--color-text);
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .fm-wrap .panel-subtitle {
+    text-align: center;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-body);
+    margin-bottom: 40px;
+  }
+
+  /* ---- GRID ---- */
+  .fm-wrap .cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 640px) {
+    .fm-wrap .cards-grid { grid-template-columns: 1fr; }
+    .fm-wrap .panel-title { font-size: 1.6rem; }
+  }
+
+  /* ---- MARKET CARD ---- */
+  .fm-wrap .card {
+    background: var(--color-card-bg);
+    border: 1.5px solid var(--color-card-border);
+    border-radius: 14px;
+    padding: 28px 28px 32px;
+  }
+
+  .fm-wrap .card-title {
+    font-family: var(--font-heading);
+    font-size: var(--font-size-card-title);
+    color: var(--color-accent-dark);
+    margin-bottom: 18px;
+  }
+
+  .fm-wrap .card-detail {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 12px;
+    font-size: var(--font-size-body);
+    color: var(--color-text);
+    line-height: 1.5;
+  }
+
+  .fm-wrap .card-detail svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: var(--color-accent);
+  }
+
+  .fm-wrap .card-detail strong { font-weight: 600; }
+
+  /* ---- EVENT CARD ---- */
+  .fm-wrap .event-card {
+    max-width: 680px;
+    margin: 0 auto 24px;
+    background: var(--color-card-bg);
+    border: 1.5px solid var(--color-card-border);
+    border-radius: 14px;
+    padding: 32px 36px 36px;
+  }
+
+  .fm-wrap .event-card .card-title { margin-bottom: 8px; }
+
+  .fm-wrap .event-tagline {
+    color: var(--color-accent);
+    font-style: italic;
+    font-size: var(--font-size-body);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .fm-wrap .event-divider {
+    border: none;
+    border-top: 1.5px solid var(--color-card-border);
+    margin-bottom: 20px;
+  }
+</style>
+
+<div class="fm-wrap">
+
+  <!-- Hidden radio inputs — these do the switching, no JS needed -->
+  <input type="radio" id="tab-offseason" name="fm-tabs" checked>
+  <input type="radio" id="tab-markets" name="fm-tabs">
+
+  <!-- Tab buttons (labels linked to the radio inputs above) -->
+  <nav class="tabs-nav">
+    <label class="tab-label label-offseason" for="tab-offseason">Off-Season Events</label>
+    <label class="tab-label label-markets" for="tab-markets">Farmers Markets Locations</label>
+  </nav>
+
+  <!-- =============================================
+       TAB 1: OFF-SEASON EVENTS
+       To add an event: copy one event-card block and paste below it.
+  ============================================= -->
+  <div class="tab-panel panel-offseason">
+    <h1 class="panel-title">Off-Season Events</h1>
+    <p class="panel-subtitle">Catch us at these neighborhood pop-up events until the markets return. No frills—just the usual haul, fresh from the oven.</p>
+
+    <!-- EVENT CARD 1 -->
+    <div class="event-card">
+      <div class="card-title">Lizards Liquid Lounge Spring Pop-Up</div>
+      <div class="event-tagline">Come for the bread, stay for the drinks—Chicago neighbors supporting neighbors</div>
+      <hr class="event-divider"/>
+      <div class="card-detail">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span><strong>Saturday, March 21</strong></span>
+      </div>
+      <div class="card-detail">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>3:00pm - 7:00pm</span>
+      </div>
+      <div class="card-detail">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span>3058 W Irving Park Rd, Chicago, IL 60618</span>
+      </div>
+    </div>
+
+    <!-- ADD MORE EVENT CARDS HERE — copy the block above -->
+  </div>
+
+  <!-- =============================================
+       TAB 2: FARMERS MARKETS LOCATIONS
+       To add a market: copy one card block and paste inside .cards-grid.
+  ============================================= -->
+  <div class="tab-panel panel-markets">
+    <h1 class="panel-title">2026 Farmers Market Locations</h1>
+    <p class="panel-subtitle">Find us at these Chicago-area farmers markets.</p>
+
+    <div class="cards-grid">
+
+      <!-- MARKET CARD 1 -->
+      <div class="card">
+        <div class="card-title">Lincoln Square (Chicago)</div>
+        <div class="card-detail">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <strong>Tuesdays May 5 – October 26</strong>
+        </div>
+        <div class="card-detail">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          7:00am – 12:00pm
+        </div>
+        <div class="card-detail">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          2301 W Leland Ave. The parking lot at the corner of W Leland Ave. and N. Lincoln Ave. Adjacent to the Western Brown Line.
+        </div>
+      </div>
+
+      <!-- MARKET CARD 2 -->
+      <div class="card">
+        <div class="card-title">SOAR (Chicago)</div>
+        <div class="card-detail">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <strong>Tuesdays June 2 – October 26</strong>
+        </div>
+        <div class="card-detail">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          7:00am – 2:00pm
+        </div>
+        <div class="card-detail">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          MCA Plaza, 220 E. Chicago Ave.
+        </div>
+      </div>
+
+      <!-- MARKET CARD 3 -->
+      <div class="card">
+        <div class="card-title">Andersonville (Chicago)</div>
+        <div class="card-detail">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <strong>Wednesdays May 13 – October 21</strong>
+        </div>
+        <div class="card-detail">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          3:00pm – 7:00pm
+        </div>
+        <div class="card-detail">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Winona Street between Clark Street and Ashland Avenue, Chicago
+        </div>
+      </div>
+
+      <!-- MARKET CARD 4 -->
+      <div class="card">
+        <div class="card-title">Oak Park, IL</div>
+        <div class="card-detail">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <strong>Saturdays May 23 – October 31</strong>
+        </div>
+        <div class="card-detail">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          7:00am – 1:00pm
+        </div>
+        <div class="card-detail">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          460 Lake St. Oak Park – 1 block west of Ridgeland Avenue in the Pilgrim Church parking lot
+        </div>
+      </div>
+
+      <!-- MARKET CARD 5 -->
+      <div class="card">
+        <div class="card-title">Park Ridge, IL</div>
+        <div class="card-detail">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <strong>Edit dates here</strong>
+        </div>
+        <div class="card-detail">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Edit hours here
+        </div>
+        <div class="card-detail">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Edit address here
+        </div>
+      </div>
+
+      <!-- ADD MORE MARKET CARDS HERE — copy a card block above -->
+
+    </div>
+  </div>
+
+</div>
